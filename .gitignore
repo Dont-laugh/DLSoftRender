@@ -4,3 +4,11 @@
 .idea/
 build/
 vsxmake*/
+
+# mac
+.DS_Store
+CMakeFiles/
+CMakeCache.txt
+CMakeScripts/
+DLSoftRenderer.build/
+DLSoftRenderer.xcodeproj/

@@ -20,4 +20,4 @@ Completely implemented from scratch with C++ 14. The repository is aim to implem
 
 ## Platform
 
-The soft renderer is created by Visual Studio 2019, and only support windows platform.
+The project is created by XMake, supports Windows and Mac OS X platform.

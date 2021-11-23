@@ -1,4 +1,6 @@
 .vs/
-out/
-DLSoftRender/Win32/
-DLSoftRender/x64/
+.vscode/
+.xmake/
+.idea/
+build/
+vsxmake*/

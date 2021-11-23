@@ -1,9 +1,11 @@
 #pragma once
 
-#include "DLVector.h"
+#include "DLVector3.h"
+
 
 namespace DontLaugh
 {
+	/* Quaternion implemented by DontLaugh */
 	struct DLQuat
 	{
 	public:
@@ -15,6 +17,8 @@ namespace DontLaugh
 	public:
 		DLQuat();
 		DLQuat(float InX, float InY, float InZ, float InW);
-		DLQuat(DLVector Axis, float AngleRad);
+		DLQuat(DLVector3 Axis, float AngleRad);
+
+		static const DLQuat Identity;
 	};
 }

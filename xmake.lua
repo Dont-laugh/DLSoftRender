@@ -4,6 +4,11 @@ set_languages("c++14")
 -- SDL2
 add_requires("libsdl")
 
+if is_os("windows") then
+	-- Avoid for error LINK1561
+	add_ldflags("/SUBSYSTEM:CONSOLE")
+end
+
 -- Main Renderer
 target("DLSoftRenderer")
 	set_kind("binary")

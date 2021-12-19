@@ -16,6 +16,9 @@ int main(int argc, char** argv)
 
 			renderer->DrawLine(100, -65, 800, 600);
 			renderer->DrawLine(400, 200, 65, 100);
+			renderer->DrawLine(100, 100, 600, 100);
+			renderer->DrawLine(100, 100, 100, 600);
+			renderer->DrawLine(100, 100, 600, 600);
 		});
 
 	delete renderer;

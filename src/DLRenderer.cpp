@@ -9,7 +9,8 @@ using namespace DontLaugh;
 
 
 static void DDA_DrawLine(SDL_Renderer* const renderer, int X0, int Y0, int X1, int Y1);
-static void Bresenham_DrawLine(SDL_Renderer* const renderer, int X0, int Y0, int X1, int Y1);
+static void Bresenham_DrawLineV1(SDL_Renderer* const renderer, int X0, int Y0, int X1, int Y1);
+static void Bresenham_DrawLineV2(SDL_Renderer* const renderer, int X0, int Y0, int X1, int Y1);
 
 
 Uint32 DLRenderer::fps = 0;
@@ -114,8 +115,9 @@ void DLRenderer::DrawLine(const int X0, const int Y0, const int X1, const int Y1
 {
 	SDL_assert(renderer != nullptr);
 	//SDL_RenderDrawLine(renderer, X0, Y0, X1, Y1);
-	
-	DDA_DrawLine(renderer, X0, Y0, X1, Y1);
+
+	//DDA_DrawLine(renderer, X0, Y0, X1, Y1);
+	Bresenham_DrawLineV1(renderer, X0, Y0, X1, Y1);
 }
 
 void DLRenderer::DrawTriangle(DLPoint* Points) const
@@ -123,6 +125,9 @@ void DLRenderer::DrawTriangle(DLPoint* Points) const
 	SDL_assert(renderer != nullptr);
 }
 
+/// <summary>
+/// DDA Algorithm
+/// </summary>
 void DDA_DrawLine(SDL_Renderer* const renderer, int X0, int Y0, int X1, int Y1)
 {
 	int dx = X1 - X0;
@@ -148,7 +153,77 @@ void DDA_DrawLine(SDL_Renderer* const renderer, int X0, int Y0, int X1, int Y1)
 	}
 }
 
-void Bresenham_DrawLine(SDL_Renderer* const renderer, int X0, int Y0, int X1, int Y1)
+/// <summary>
+/// Bresenham Algorithm Raw Version
+/// </summary>
+void Bresenham_DrawLineV1(SDL_Renderer* const renderer, int X0, int Y0, int X1, int Y1)
 {
+	int dx = X1 - X0;
+	int dy = Y1 - Y0;
+	int d = dx - 2 * dy;
 
+	if (dx < 0)
+	{
+		std::swap(X0, X1);
+		dx = -dx;
+	}
+	if (dy < 0)
+	{
+		std::swap(Y0, Y1);
+		dy = -dy;
+	}
+
+	if (dx > dy)
+	{
+		int y = Y0;
+		for (int x = X0; x <= X1; ++x)
+		{
+			SDL_RenderDrawPoint(renderer, x, y);
+			if (d < 0)
+			{
+				++y;
+				d += 2 * dx - 2 * dy;
+			}
+			else
+			{
+				d -= 2 * dy;
+			}
+		}
+	}
+	else
+	{
+		int x = X0;
+		for (int y = Y0; y <= Y1; ++y)
+		{
+			SDL_RenderDrawPoint(renderer, x, y);
+			if (d < 0)
+			{
+				++x;
+				d += 2 * dy - 2 * dx;
+			}
+			else
+			{
+				d -= 2 * dx;
+			}
+		}
+	}
+}
+
+/// <summary>
+/// Bresenham Algorithm Improved Version
+/// </summary>
+void Bresenham_DrawLineV2(SDL_Renderer* const renderer, int X0, int Y0, int X1, int Y1)
+{
+	int dx = abs(X1 - X0), sx = X0 < X1 ? 1 : -1;
+	int dy = abs(Y1 - Y0), sy = Y0 < Y1 ? 1 : -1;
+	int err = (dx > dy ? dx : -dy) / 2, e2;
+
+	while (true)
+	{
+		SDL_RenderDrawPoint(renderer, X0, Y0);
+		if (X0 == X1 && Y0 == Y1) break;
+		e2 = err;
+		if (e2 > -dx) { err -= dy; X0 += sx; }
+		if (e2 < dy) { err += dx; Y0 += sy; }
+	}
 }

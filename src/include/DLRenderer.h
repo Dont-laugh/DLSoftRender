@@ -6,6 +6,7 @@
 
 namespace DontLaugh
 {
+	/* Soft renderer implemented by DontLaugh */
 	class DLRenderer
 	{
 	public:
